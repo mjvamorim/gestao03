@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,9 +50,14 @@ public class ConvidadosControllerAPI {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@PostMapping 
-	public  ResponseEntity<?> saveConvidado(Convidado convidado) {
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public  ResponseEntity<?> saveConvidado(@RequestBody Convidado convidado) {
 		System.out.println(convidado.getId()+"  "+convidado.getNome()+" "+convidado.getQtde());
-		return new ResponseEntity<Convidado> (convidados.save(convidado), HttpStatus.OK);
+		if (convidado.getId() != null) {
+			//return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<Convidado> (convidados.save(convidado), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
+
